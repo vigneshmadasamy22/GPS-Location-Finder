@@ -11,6 +11,7 @@ A web application that tracks your current location, helps you search for destin
 - Current location and destination markers.
 - Recent route history.
 - Loading and error handling.
+- Next.js sends current GPS coordinates to FastAPI using `POST /location` and displays the API response.
 - Responsive user interface.
 
 ## Technologies Used
@@ -32,7 +33,34 @@ npm.cmd run dev
 
 Open: http://localhost:3000
 
-### Backend (Optional)
+### Backend
+
+Start the FastAPI backend in a separate terminal:
+
+```powershell
+cd backend
+python -m venv .venv
+.\\.venv\\Scripts\\Activate.ps1
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+Backend URL: http://127.0.0.1:8000  
+Health check: http://127.0.0.1:8000/health  
+Location endpoint: `POST http://127.0.0.1:8000/location`
+
+The endpoint accepts JSON such as:
+
+```json
+{
+  "latitude": 11.0168,
+  "longitude": 76.9558
+}
+```
+
+It validates coordinate ranges and returns a success message with the received latitude and longitude. The frontend sends the first GPS fix after tracking starts. If the backend is unavailable, an error appears in the frontend.
+
+### Frontend
 
 Open another terminal:
 
